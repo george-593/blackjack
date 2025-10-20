@@ -7,7 +7,7 @@ Card GenerateRandomCard()
     int suitNum = RandomNumberGenerator.GetInt32(0, suits.Length);
     string suit = suits[suitNum];
 
-    int cardNum = RandomNumberGenerator.GetInt32(1, 14);
+    int cardNum = RandomNumberGenerator.GetInt32(1, 13);
 
     return new Card(suit, cardNum);
 }
