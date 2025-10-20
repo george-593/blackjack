@@ -82,7 +82,7 @@ void Quit() {
 
 void PlayGame()
 {
-    new NotImplementedException();
+    throw new NotImplementedException();
 }
 
 Card GenerateRandomCard()
