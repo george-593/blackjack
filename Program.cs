@@ -85,6 +85,56 @@ void PlayGame()
     Console.WriteLine("Starting new game...\n");
     Console.CursorVisible = true;
 
+    int playerChips = 1000;
+    while (playerChips > 0) {
+        Console.Write($"Enter your bet, you have {playerChips} chips available: ");
+        int bet = int.Parse(Console.ReadLine()!);
+
+        int result = PlayRound(bet);
+    }
+}
+
+int PlayRound(int bet)
+{
+    List<Card> dealersCards = new List<Card>();
+    List<Card> playersCards = new List<Card>();
+
+    // Give the player an extra card at the start of the round
+    Card playerFirstCard = GenerateRandomCard();
+    playersCards.Add(playerFirstCard);
+    Console.WriteLine($"Your Card: {playerFirstCard.cardNum} of {playerFirstCard.suit}");
+
+    // Loop round until someone wins
+    bool continuePlaying = true;
+    while (continuePlaying)
+    {
+        // Deal the cards out
+        Card lastDealerCard = GenerateRandomCard();
+        dealersCards.Add(lastDealerCard);
+
+        Card lastPlayerCard = GenerateRandomCard();
+        playersCards.Add(lastPlayerCard);
+
+        // Add total card count
+        Console.WriteLine($"Your Card: {lastPlayerCard.cardNum} of {lastPlayerCard.suit}\nYour total value: {SumCardList(playersCards)}\n");
+        Console.WriteLine($"Dealer's Card: {lastDealerCard.cardNum} of {lastDealerCard.suit}\nDealer's total value: {SumCardList(dealersCards)}");
+
+        Console.WriteLine("\nWhat action would you like to do?\nH = Hit, S = Stand");
+        char playerAction = Console.ReadKey(true).KeyChar;
+    }
+
+
+    return 1;
+}
+
+
+int SumCardList(List<Card> cardList) {
+    int sum = 0;
+    foreach (Card card in cardList)
+    {
+        sum += card.cardNum;
+    }
+    return sum;
 }
 
 Card GenerateRandomCard()
@@ -96,6 +146,8 @@ Card GenerateRandomCard()
 
     // Random card number from the blackjack deck
     int cardNum = RandomNumberGenerator.GetInt32(1, 13);
+    // Set the value to a max of 10 (still need 13 to simulate full deck)
+    if (cardNum > 10) cardNum = 10;
 
     return new Card(suit, cardNum);
 }
