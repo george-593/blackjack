@@ -22,7 +22,6 @@ void MainMenu()
                 selected = (selected + 1) % options.Length;
                 break;
             case ConsoleKey.Enter:
-            case ConsoleKey.Spacebar:
                 if (selected == 0) PlayGame(); // Play
                 else if (selected == 1) Quit(); // Quit
                 break;
@@ -82,7 +81,10 @@ void Quit() {
 
 void PlayGame()
 {
-    throw new NotImplementedException();
+    Console.Clear();
+    Console.WriteLine("Starting new game...\n");
+    Console.CursorVisible = true;
+
 }
 
 Card GenerateRandomCard()
