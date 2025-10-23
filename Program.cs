@@ -88,9 +88,17 @@ void PlayGame()
         Console.Clear();
         Console.CursorVisible = true;
 
-        // Check if player can afford bet
         Console.Write($"Enter your bet, you have {playerChips} chips available: ");
         int bet = int.Parse(Console.ReadLine()!);
+
+        if (bet > playerChips)
+        {
+            Console.WriteLine("You cannot afford that bet, exiting to menu");
+
+            Console.Write("\nPress any key to continue: ");
+            Console.ReadKey();
+            return;
+        }
         playerChips -= bet;
 
         // Clear the game start bet message
