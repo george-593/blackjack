@@ -112,9 +112,13 @@ int PlayRound(int bet)
 
     bool playerStood = false;
 
+    // Variables to know when the round is over
+    bool playerFinished = false;
+    bool dealerFinished = false;
+
     bool firstLoop = true;
     char playerAction = 'h';
-    while (continuePlaying)
+    while (true )
     {
         // Clear the console on each new iteration, except first
         if (!firstLoop) Console.Clear();
@@ -124,6 +128,8 @@ int PlayRound(int bet)
         int playerTotal = SumCardList(playersCards);
 
         if (playerTotal > 21) {
+            if (!playerFinished) playerFinished = true;
+
             Console.WriteLine($"You have gone bust on {playerTotal}\n");
         } else if (playerAction == 'h')
         {
@@ -136,6 +142,7 @@ int PlayRound(int bet)
         else if (playerAction == 's' || playerStood)
         {
             if (!playerStood) playerStood = true;
+            if (!playerFinished) playerFinished = true;
 
             Console.WriteLine($"You have stood on {playerTotal}\n");
         }
@@ -149,20 +156,34 @@ int PlayRound(int bet)
 
             dealerTotal = SumCardList(dealersCards);
             Console.WriteLine($"Dealer's Card: {lastDealerCard.cardNum} of {lastDealerCard.suit}\nDealer's total value: {dealerTotal}");
-        } else if (dealerTotal > 21) {
-            Console.WriteLine($"Dealer has gone bust on {dealerTotal}!");
-        } else
+        }
+        else if (dealerTotal > 21)
         {
+            if (!dealerFinished) dealerFinished = true;
+
+            Console.WriteLine($"Dealer has gone bust on {dealerTotal}!");
+        }
+        else
+        {
+            if (!dealerFinished) dealerFinished = true;
+
             dealerTotal = SumCardList(dealersCards);
             Console.WriteLine($"Dealer has stood on {dealerTotal}");
         }
+        
+        if (playerFinished && dealerFinished) break;
 
-        Console.WriteLine("\nWhat action would you like to do?\nH = Hit, S = Stand");
-        playerAction = Console.ReadKey(true).KeyChar;
+        if (!playerFinished) {
+            Console.WriteLine("\nWhat action would you like to do?\nH = Hit, S = Stand");
+            playerAction = Console.ReadKey(true).KeyChar;
+        } else {
+            Console.Write("\nPress any key to continue: ");
+            Console.ReadLine();
+        }
 
         if (firstLoop) firstLoop = false;
     }
-
+    Console.WriteLine("\nRound Over!!");
 
     return 1;
 }
