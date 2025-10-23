@@ -99,28 +99,55 @@ int PlayRound(int bet)
     List<Card> dealersCards = new List<Card>();
     List<Card> playersCards = new List<Card>();
 
+    // Clear the game start bet message
+    Console.Clear();
+
     // Give the player an extra card at the start of the round
     Card playerFirstCard = GenerateRandomCard();
     playersCards.Add(playerFirstCard);
-    Console.WriteLine($"Your Card: {playerFirstCard.cardNum} of {playerFirstCard.suit}");
+    Console.WriteLine($"\nYour Card: {playerFirstCard.cardNum} of {playerFirstCard.suit}");
 
     // Loop round until someone wins
     bool continuePlaying = true;
+    bool firstLoop = true;
+    char playerAction = 'h';
     while (continuePlaying)
     {
-        // Deal the cards out
-        Card lastDealerCard = GenerateRandomCard();
-        dealersCards.Add(lastDealerCard);
+        // Clear the console on each new iteration, except first
+        if (!firstLoop) Console.Clear();
 
-        Card lastPlayerCard = GenerateRandomCard();
-        playersCards.Add(lastPlayerCard);
+        // Get totals for player and dealer
+        int dealerTotal = SumCardList(dealersCards);
+        int playerTotal = 0;
 
-        // Add total card count
-        Console.WriteLine($"Your Card: {lastPlayerCard.cardNum} of {lastPlayerCard.suit}\nYour total value: {SumCardList(playersCards)}\n");
-        Console.WriteLine($"Dealer's Card: {lastDealerCard.cardNum} of {lastDealerCard.suit}\nDealer's total value: {SumCardList(dealersCards)}");
+        if (playerAction == 'h')
+        {
+            Card lastPlayerCard = GenerateRandomCard();
+            playersCards.Add(lastPlayerCard);
+
+            playerTotal = SumCardList(playersCards);
+            Console.WriteLine($"Your Card: {lastPlayerCard.cardNum} of {lastPlayerCard.suit}\nYour total value: {playerTotal}\n");
+        } else {
+
+        }
+
+        // Dealer stands on 17
+        if (dealerTotal < 17)
+        {
+            // Deal the cards out
+            Card lastDealerCard = GenerateRandomCard();
+            dealersCards.Add(lastDealerCard);
+
+            dealerTotal = SumCardList(dealersCards);
+            Console.WriteLine($"Dealer's Card: {lastDealerCard.cardNum} of {lastDealerCard.suit}\nDealer's total value: {dealerTotal}");
+        } else {
+            Console.WriteLine($"Dealer has stood on {dealerTotal}");
+        }
 
         Console.WriteLine("\nWhat action would you like to do?\nH = Hit, S = Stand");
-        char playerAction = Console.ReadKey(true).KeyChar;
+        playerAction = Console.ReadKey(true).KeyChar;
+
+        if (firstLoop) firstLoop = false;
     }
 
 
