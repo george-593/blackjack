@@ -107,9 +107,6 @@ int PlayRound(int bet)
     playersCards.Add(playerFirstCard);
     Console.WriteLine($"\nYour Card: {playerFirstCard.cardNum} of {playerFirstCard.suit}");
 
-    // Loop round until someone wins
-    bool continuePlaying = true;
-
     bool playerStood = false;
 
     // Variables to know when the round is over
@@ -118,7 +115,9 @@ int PlayRound(int bet)
 
     bool firstLoop = true;
     char playerAction = 'h';
-    while (true )
+
+    // Loop round until someone wins
+    while (true)
     {
         // Clear the console on each new iteration, except first
         if (!firstLoop) Console.Clear();
