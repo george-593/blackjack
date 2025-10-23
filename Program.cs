@@ -92,6 +92,9 @@ void PlayGame()
         Console.Write($"Enter your bet, you have {playerChips} chips available: ");
         int bet = int.Parse(Console.ReadLine()!);
 
+        // Clear the game start bet message
+        Console.Clear();
+
         int result = PlayRound(bet);
     }
 }
@@ -101,41 +104,36 @@ int PlayRound(int bet)
     List<Card> dealersCards = new List<Card>();
     List<Card> playersCards = new List<Card>();
 
-    // Clear the game start bet message
-    Console.Clear();
-
     // Deal dealer's first card
     Card firstDealerCard = GenerateRandomCard();
     dealersCards.Add(firstDealerCard);
-
     Console.WriteLine($"Dealer's Card: {firstDealerCard.cardNum} of {firstDealerCard.suit}\n");
 
-    // Give the player an extra card at the start of the round
+    // Deal the players first card
     Card playerFirstCard = GenerateRandomCard();
     playersCards.Add(playerFirstCard);
     Console.WriteLine($"Your Card: {playerFirstCard.cardNum} of {playerFirstCard.suit}");
-
-    bool playerStood = false;
 
     // Variables to know when the round is over
     bool playerFinished = false;
     bool dealerFinished = false;
 
-    char playerAction = 'h';
-
     // Get totals for player and dealer
     int dealerTotal = SumCardList(dealersCards);
     int playerTotal = SumCardList(playersCards);
 
+    // The player's action (hit/stand)
+    char playerAction = 'h';
     while (!playerFinished)
     {
-
+        // Check if the player has gone bust
         if (playerTotal > 21)
         {
             playerFinished = true;
 
             Console.WriteLine($"You have gone bust on {playerTotal}\n");
         }
+        // If the player hit, generate them another card
         else if (playerAction == 'h')
         {
             Card lastPlayerCard = GenerateRandomCard();
@@ -144,14 +142,15 @@ int PlayRound(int bet)
             playerTotal = SumCardList(playersCards);
             Console.WriteLine($"Your Card: {lastPlayerCard.cardNum} of {lastPlayerCard.suit}\nYour total value: {playerTotal}");
         }
-        else if (playerAction == 's' || playerStood)
+        // If the player stood, end their turn
+        else if (playerAction == 's')
         {
-            if (!playerStood) playerStood = true;
             playerFinished = true;
 
             Console.WriteLine($"You have stood on {playerTotal}\n");
         }
 
+        // Input management
         if (!playerFinished)
         {
             Console.WriteLine("\nWhat action would you like to do?\nH = Hit, S = Stand");
@@ -169,27 +168,29 @@ int PlayRound(int bet)
 
     while (!dealerFinished)
     {
-        // Dealer stands on 17
-        if (dealerTotal < 17)
+        // Check if the dealer has gone bust
+        if (dealerTotal > 21)
+        {
+            dealerFinished = true;
+
+            Console.WriteLine($"Dealer has gone bust on {dealerTotal}!");
+        }
+        //  Check if the dealer has stood (on 17)
+        else if (dealerTotal >= 17)
+        {
+            dealerFinished = true;
+
+            dealerTotal = SumCardList(dealersCards);
+            Console.WriteLine($"Dealer has stood on {dealerTotal}");
+        }
+        // Generate a new card for the dealer
+        else
         {
             Card lastDealerCard = GenerateRandomCard();
             dealersCards.Add(lastDealerCard);
 
             dealerTotal = SumCardList(dealersCards);
             Console.WriteLine($"Dealer's Card: {lastDealerCard.cardNum} of {lastDealerCard.suit}\nDealer's total value: {dealerTotal}");
-        }
-        else if (dealerTotal > 21)
-        {
-            dealerFinished = true;
-
-            Console.WriteLine($"Dealer has gone bust on {dealerTotal}!");
-        }
-        else
-        {
-            dealerFinished = true;
-
-            dealerTotal = SumCardList(dealersCards);
-            Console.WriteLine($"Dealer has stood on {dealerTotal}");
         }
 
         Console.Write("\nPress any key to continue: ");
