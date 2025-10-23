@@ -82,18 +82,18 @@ void Quit()
 
 void PlayGame()
 {
-    Console.Clear();
-    Console.WriteLine("Starting new game...\n");
-    Console.CursorVisible = true;
-
     int playerChips = 1000;
     while (playerChips > 0)
     {
+        Console.Clear();
+        Console.CursorVisible = true;
+
         Console.Write($"Enter your bet, you have {playerChips} chips available: ");
         int bet = int.Parse(Console.ReadLine()!);
 
         // Clear the game start bet message
         Console.Clear();
+        Console.CursorVisible = false;
 
         int result = PlayRound(bet);
     }
@@ -198,9 +198,40 @@ int PlayRound(int bet)
 
         Console.Clear();
     }
-    Console.WriteLine("Round Over!!");
+    Console.WriteLine("Round Over!");
 
-    return 1;
+    Console.WriteLine($"Player's Total: {playerTotal}\nDealer's Total: {dealerTotal}\n");
+
+    if (playerTotal > 21)
+    {
+        Console.WriteLine("Result: Loss");
+        bet = 0;
+    }
+    else if (dealerTotal > 21)
+    {
+        Console.WriteLine("Result: Win");
+        bet *= 2;
+    }
+    else if (playerTotal > dealerTotal)
+    {
+        Console.WriteLine("Result: Win");
+        bet *= 2;
+    }
+    else if (playerTotal == dealerTotal)
+    {
+        Console.WriteLine("Result: Push");
+    }
+    else
+    {
+        Console.WriteLine("Result: Loss");
+        bet = 0;
+    }
+
+
+    Console.WriteLine($"You receive: {bet} credits\n");
+    Console.WriteLine("Press any key to continue");
+    Console.ReadKey();
+    return bet;
 }
 
 
