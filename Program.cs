@@ -121,10 +121,7 @@ int PlayRound(int bet)
 
         // Get totals for player and dealer
         int dealerTotal = SumCardList(dealersCards);
-        int playerTotal = 0;
-
-
-        playerTotal = SumCardList(playersCards);
+        int playerTotal = SumCardList(playersCards);
 
         if (playerTotal > 21) {
             Console.WriteLine($"You have gone bust on {playerTotal}\n");
