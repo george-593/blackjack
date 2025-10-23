@@ -109,6 +109,9 @@ int PlayRound(int bet)
 
     // Loop round until someone wins
     bool continuePlaying = true;
+
+    bool playerStood = false;
+
     bool firstLoop = true;
     char playerAction = 'h';
     while (continuePlaying)
@@ -120,15 +123,24 @@ int PlayRound(int bet)
         int dealerTotal = SumCardList(dealersCards);
         int playerTotal = 0;
 
-        if (playerAction == 'h')
+
+        playerTotal = SumCardList(playersCards);
+
+        if (playerTotal > 21) {
+            Console.WriteLine($"You have gone bust on {playerTotal}\n");
+        } else if (playerAction == 'h')
         {
             Card lastPlayerCard = GenerateRandomCard();
             playersCards.Add(lastPlayerCard);
 
             playerTotal = SumCardList(playersCards);
             Console.WriteLine($"Your Card: {lastPlayerCard.cardNum} of {lastPlayerCard.suit}\nYour total value: {playerTotal}\n");
-        } else {
+        }
+        else if (playerAction == 's' || playerStood)
+        {
+            if (!playerStood) playerStood = true;
 
+            Console.WriteLine($"You have stood on {playerTotal}\n");
         }
 
         // Dealer stands on 17
@@ -140,7 +152,11 @@ int PlayRound(int bet)
 
             dealerTotal = SumCardList(dealersCards);
             Console.WriteLine($"Dealer's Card: {lastDealerCard.cardNum} of {lastDealerCard.suit}\nDealer's total value: {dealerTotal}");
-        } else {
+        } else if (dealerTotal > 21) {
+            Console.WriteLine($"Dealer has gone bust on {dealerTotal}!");
+        } else
+        {
+            dealerTotal = SumCardList(dealersCards);
             Console.WriteLine($"Dealer has stood on {dealerTotal}");
         }
 
