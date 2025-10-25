@@ -11,6 +11,7 @@ void MainMenu()
         Console.Clear();
         DrawHeader();
         DrawMenu(options, selected);
+        Console.WriteLine("Use ↑/↓ to navigate, Enter to select, Esc to quit.\n");
 
         var key = Console.ReadKey(true);
         switch (key.Key)
@@ -49,10 +50,8 @@ void DrawHeader()
     Console.Write(" ♥");
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine("   ║");
-    Console.WriteLine($"╚{border}╝");
+    Console.WriteLine($"╚{border}╝\n");
     Console.ResetColor();
-
-    Console.WriteLine("Use ↑/↓ to navigate, Enter to select, Esc to quit.\n");
 }
 
 void DrawMenu(string[] options, int selected)
@@ -80,12 +79,19 @@ void Quit()
     Environment.Exit(0);
 }
 
+// Clear's the console and draws the header again
+void ResetView()
+{
+    Console.Clear();
+    DrawHeader();
+}
+
 void PlayGame()
 {
     int playerChips = 1000;
     while (playerChips > 0)
     {
-        Console.Clear();
+        ResetView();
         Console.CursorVisible = true;
 
         Console.Write($"Enter your bet, you have {playerChips} chips available: ");
@@ -102,14 +108,14 @@ void PlayGame()
         playerChips -= bet;
 
         // Clear the game start bet message
-        Console.Clear();
+        ResetView();
         Console.CursorVisible = false;
 
         int result = PlayRound(bet);
         playerChips += result;
     }
 
-    Console.Clear();
+    ResetView();
     Console.WriteLine("You have gone bankrupt, better luck next time!");
     Console.Write("\nPress any key to continue: ");
     Console.ReadKey();
@@ -178,7 +184,7 @@ int PlayRound(int bet)
             Console.ReadKey();
         }
 
-        Console.Clear();
+        ResetView();
     }
 
 
@@ -212,7 +218,7 @@ int PlayRound(int bet)
         Console.Write("\nPress any key to continue: ");
         Console.ReadKey();
 
-        Console.Clear();
+        ResetView();
     }
     Console.WriteLine("Round Over!");
 
