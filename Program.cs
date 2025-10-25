@@ -79,7 +79,7 @@ void Quit()
     Environment.Exit(0);
 }
 
-// Clear's the console and draws the header again
+// Clears the console and draws the header again
 void ResetView()
 {
     Console.Clear();
