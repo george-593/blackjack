@@ -121,7 +121,7 @@ void PlayGame()
     Console.ReadKey();
 }
 
-int PlayRound(int bet)
+int PlayRound(double bet)
 {
     List<Card> dealersCards = new List<Card>();
     List<Card> playersCards = new List<Card>();
@@ -224,6 +224,11 @@ int PlayRound(int bet)
 
     Console.WriteLine($"Player's Total: {playerTotal}\nDealer's Total: {dealerTotal}\n");
 
+    if (playerTotal == 21 && playersCards.Count == 1)
+    {
+        Console.WriteLine("Result: Blackjack Win");
+        bet *= 2.5;
+    }
     if (playerTotal > 21)
     {
         Console.WriteLine("Result: Loss");
@@ -253,7 +258,7 @@ int PlayRound(int bet)
     Console.WriteLine($"You receive: {bet} credits\n");
     Console.WriteLine("Press any key to continue");
     Console.ReadKey();
-    return bet;
+    return (int)Math.Floor(bet);
 }
 
 
