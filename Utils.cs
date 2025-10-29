@@ -20,7 +20,7 @@ static public class Utils
         string suit = suits[suitNum];
 
         // Random card number from the blackjack deck
-        int cardNum = RandomNumberGenerator.GetInt32(1, 13);
+        int cardNum = RandomNumberGenerator.GetInt32(1, 14);
         // Set the value to a max of 10 (still need 13 to simulate full deck)
         if (cardNum > 10) cardNum = 10;
 
