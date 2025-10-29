@@ -229,7 +229,7 @@ int PlayRound(double bet)
         Console.WriteLine("Result: Blackjack Win");
         bet *= 2.5;
     }
-    if (playerTotal > 21)
+    else if (playerTotal > 21)
     {
         Console.WriteLine("Result: Loss");
         bet = 0;
