@@ -1,4 +1,4 @@
-class Card
+public class Card
 {
     public string suit;
     public int cardNum;
